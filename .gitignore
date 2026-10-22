@@ -5,3 +5,7 @@ playwright-report/
 tools/img2threejs/.git/
 __pycache__/
 *.tsbuildinfo
+releases/
+.env
+.env.*
+!.env.example
