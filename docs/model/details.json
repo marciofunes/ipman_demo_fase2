@@ -1,0 +1,273 @@
+{
+  "scanMethod": "component-zones",
+  "targetMinDetails": 10,
+  "note": "Enumerate every identity-defining small detail before authoring the spec. Each detail must map to a component.localFeatures entry or material.localOverrides entry, never prose only. Use forge/stage1_intake/build_detail_inventory.py to scan zones.",
+  "details": [
+    {
+      "id": "detail-crown",
+      "kind": "bevel",
+      "description": "Blue crown",
+      "componentRefs": [
+        "crown"
+      ],
+      "materialRefs": [],
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "confidence": 0.8,
+      "mappedTo": [
+        "componentTree.crown.localFeatures"
+      ],
+      "mapsTo": {
+        "ref": "crown-feature"
+      }
+    },
+    {
+      "id": "detail-root",
+      "kind": "bevel",
+      "description": "Carcaça",
+      "componentRefs": [
+        "root"
+      ],
+      "materialRefs": [],
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "confidence": 0.8,
+      "mappedTo": [
+        "componentTree.root.localFeatures"
+      ],
+      "mapsTo": {
+        "ref": "root-feature"
+      }
+    },
+    {
+      "id": "detail-logos",
+      "kind": "linework",
+      "description": "GROB and G300",
+      "componentRefs": [
+        "logos"
+      ],
+      "materialRefs": [],
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "confidence": 0.8,
+      "mappedTo": [
+        "componentTree.logos.localFeatures"
+      ],
+      "mapsTo": {
+        "ref": "logos-feature"
+      }
+    },
+    {
+      "id": "detail-table",
+      "kind": "bevel",
+      "description": "Mesa giratória",
+      "componentRefs": [
+        "table"
+      ],
+      "materialRefs": [],
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "confidence": 0.8,
+      "mappedTo": [
+        "componentTree.table.localFeatures"
+      ],
+      "mapsTo": {
+        "ref": "table-feature"
+      }
+    },
+    {
+      "id": "detail-spindle",
+      "kind": "bevel",
+      "description": "Spindle",
+      "componentRefs": [
+        "spindle"
+      ],
+      "materialRefs": [],
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "confidence": 0.8,
+      "mappedTo": [
+        "componentTree.spindle.localFeatures"
+      ],
+      "mapsTo": {
+        "ref": "spindle-feature"
+      }
+    },
+    {
+      "id": "detail-controller",
+      "kind": "bevel",
+      "description": "Painel de controle",
+      "componentRefs": [
+        "controller"
+      ],
+      "materialRefs": [],
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "confidence": 0.8,
+      "mappedTo": [
+        "componentTree.controller.localFeatures"
+      ],
+      "mapsTo": {
+        "ref": "controller-feature"
+      }
+    },
+    {
+      "id": "detail-tank",
+      "kind": "bevel",
+      "description": "Tanque",
+      "componentRefs": [
+        "tank"
+      ],
+      "materialRefs": [],
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "confidence": 0.8,
+      "mappedTo": [
+        "componentTree.tank.localFeatures"
+      ],
+      "mapsTo": {
+        "ref": "tank-feature"
+      }
+    },
+    {
+      "id": "detail-holders",
+      "kind": "bevel",
+      "description": "Porta-ferramentas",
+      "componentRefs": [
+        "holders"
+      ],
+      "materialRefs": [],
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "confidence": 0.8,
+      "mappedTo": [
+        "componentTree.holders.localFeatures"
+      ],
+      "mapsTo": {
+        "ref": "holders-feature"
+      }
+    },
+    {
+      "id": "detail-bellows",
+      "kind": "bevel",
+      "description": "Bellows",
+      "componentRefs": [
+        "bellows"
+      ],
+      "materialRefs": [],
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "confidence": 0.8,
+      "mappedTo": [
+        "componentTree.bellows.localFeatures"
+      ],
+      "mapsTo": {
+        "ref": "bellows-feature"
+      }
+    },
+    {
+      "id": "detail-vents",
+      "kind": "bevel",
+      "description": "Vents",
+      "componentRefs": [
+        "vents"
+      ],
+      "materialRefs": [],
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "confidence": 0.8,
+      "mappedTo": [
+        "componentTree.vents.localFeatures"
+      ],
+      "mapsTo": {
+        "ref": "vents-feature"
+      }
+    },
+    {
+      "id": "detail-screws",
+      "kind": "fastener",
+      "description": "Fasteners",
+      "componentRefs": [
+        "screws"
+      ],
+      "materialRefs": [],
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "confidence": 0.8,
+      "mappedTo": [
+        "componentTree.screws.localFeatures"
+      ],
+      "mapsTo": {
+        "ref": "screws-feature"
+      }
+    },
+    {
+      "id": "detail-seams",
+      "kind": "bevel",
+      "description": "Panel seams",
+      "componentRefs": [
+        "seams"
+      ],
+      "materialRefs": [],
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "confidence": 0.8,
+      "mappedTo": [
+        "componentTree.seams.localFeatures"
+      ],
+      "mapsTo": {
+        "ref": "seams-feature"
+      }
+    },
+    {
+      "id": "detail-keys",
+      "kind": "bevel",
+      "description": "Control keys",
+      "componentRefs": [
+        "keys"
+      ],
+      "materialRefs": [],
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "confidence": 0.8,
+      "mappedTo": [
+        "componentTree.keys.localFeatures"
+      ],
+      "mapsTo": {
+        "ref": "keys-feature"
+      }
+    },
+    {
+      "id": "detail-screen",
+      "kind": "bevel",
+      "description": "Control display",
+      "componentRefs": [
+        "screen"
+      ],
+      "materialRefs": [],
+      "evidenceRefs": [
+        "full-object"
+      ],
+      "confidence": 0.8,
+      "mappedTo": [
+        "componentTree.screen.localFeatures"
+      ],
+      "mapsTo": {
+        "ref": "screen-feature"
+      }
+    }
+  ]
+}

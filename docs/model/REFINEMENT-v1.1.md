@@ -1,0 +1,13 @@
+# G300 — refinamento v1.1
+
+Segunda referência fornecida pelo usuário: `public/reference/g300-detail.jpg` (arquivo original `33347-10697280.jpg`). A nova fotografia foi usada para conferir a relação entre a abertura frontal, o spindle horizontal, o berço da mesa, a faixa azul contínua superior, os módulos de carenagem e o conjunto de motores/bombas visível na lateral direita.
+
+`src/g300.model.ts` substitui a geometria inicial por uma montagem com seis unidades semânticas independentes: spindle, motor principal, bombas 1–3 e mesa giratória. O import estável `g300.generated.ts` reexporta essa fábrica. Inclui nariz cônico/porta-ferramenta, flanges aparafusadas, motor com aletas e ventoinha, mancais do eixo A, mesa C com ranhuras e fixação, conjuntos de bomba/acoplamento/motor, linhas hidráulicas, acumulador, magazine, painel CNC e teto segmentado.
+
+Cada unidade tem um grupo de posicionamento, um pivô de rotor, materiais próprios e uma âncora de anotação. As peças não são fundidas em uma malha única. O modo raio-X modifica exclusivamente `shellMaterials`; os materiais internos ficam opacos. O teste geométrico verifica esse isolamento, os volumes e a associação dos descendentes aos respectivos componentes.
+
+As chapas e os foles de proteção pertencem à carenagem; as longarinas, os mancais e as unidades de interesse ficam opacos. As labels são elementos React numa camada DOM estável, posicionados pela projeção da câmera a cada frame, com linhas até o conjunto correspondente. No celular, as seis anotações são distribuídas pelas bordas. Restaurar a câmera ajusta os controles sem desmontar o canvas. A câmera calcula a distância a partir da proporção da área disponível; o renderer evita frames contínuos quando o processo está pausado ou a cena está oculta pelo painel de parâmetros.
+
+O motor de cenários em `src/twin-engine.ts` calcula RPM, RMS, corrente, potência, fator de potência e condição por componente. Desbalanceamento eleva a resposta vibratória; restrição nas bombas eleva vibração/carga elétrica. Há acoplamento motor–spindle e transferência para a mesa. As amplitudes visuais são aumentadas para mostrar o mecanismo de falha; não equivalem a deslocamentos físicos reais da máquina. Verde, âmbar e vermelho representam RMS abaixo de 3, entre 3 e 5, e a partir de 5 mm/s, respectivamente. Esses limiares são convenções da demonstração e não limites certificados do fabricante.
+
+Continuam válidas as limitações da reconstrução procedural a partir de fotografias, sem CAD oficial nem calibração do equipamento. A evolução visual não constitui uma aprovação retroativa dos gates de fidelidade do img2threejs.

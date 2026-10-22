@@ -1,0 +1,116 @@
+{
+  "twin": {
+    "title": "Digital Twin | GROB G300",
+    "subtitle": "Digital twin of the machining centre with what-if scenarios",
+    "crumb": "Digital Twin",
+    "loading": "Loading digital twin…",
+    "loadError": "Failed to load the 3D model",
+    "loadErrorBody": "The browser could not initialise WebGL or load the geometry. Indicators and scenarios remain available.",
+    "noWebgl": "WebGL is not available in this browser.",
+    "cards": {
+      "rms": "Vibration RMS",
+      "kurtosis": "Kurtosis",
+      "crest": "Crest factor",
+      "current": "Current",
+      "power": "Active power",
+      "pf": "Power factor",
+      "condition": "Condition"
+    },
+    "of": "{{name}}",
+    "xray": "X-ray",
+    "labels": "Labels",
+    "cameras": {
+      "overview": "Machine",
+      "workarea": "Machining area",
+      "service": "Pumps and units",
+      "xray": "Internal"
+    },
+    "components": {
+      "spindle": "Spindle",
+      "table": "Rotary table",
+      "bomba1": "Pump 1 · coolant",
+      "bomba2": "Pump 2 · hydraulic",
+      "bomba3": "Pump 3 · high pressure"
+    },
+    "componentsShort": {
+      "spindle": "Spindle",
+      "table": "Rotary table",
+      "bomba1": "Pump 1",
+      "bomba2": "Pump 2",
+      "bomba3": "Pump 3"
+    },
+    "electricalLabel": "Three-phase electrical",
+    "scenarios": "What-if scenarios",
+    "component": "Component",
+    "parameters": "Process parameters",
+    "reset": "Reset",
+    "presets": "Ready-made scenarios",
+    "rmsLive": "Vibration RMS · last 60 s",
+    "contributions": "Contributions to vibration",
+    "cycle": "Machining cycle",
+    "phase": "Phase",
+    "face": "Face {{n}} of 5",
+    "parts": "Finished parts",
+    "phases": {
+      "index": "Table rotation",
+      "approach": "Approach",
+      "cut": "Milling",
+      "retract": "Retract",
+      "tilt": "Cradle tilt"
+    },
+    "chatter": "Chatter: depth above the stability limit",
+    "hint": "Drag to rotate, scroll to zoom, click a component to select it",
+    "load": "Load",
+    "voltage": "Voltage",
+    "apparent": "S",
+    "reactive": "Q",
+    "rotation": "Speed",
+    "attentionAt": "attention ≥ {{v}}",
+    "criticalAt": "critical ≥ {{v}}"
+  },
+  "params": {
+    "spindleSpeed": "Spindle speed",
+    "feed": "Feed rate",
+    "depth": "Depth of cut",
+    "unbalance": "Tool unbalance",
+    "bearingWear": "Bearing wear",
+    "toolWear": "Tool wear",
+    "tableSpeed": "Table speed",
+    "load": "Part + fixture mass",
+    "eccentricity": "Clamping eccentricity",
+    "frequency": "Drive frequency",
+    "pressure": "Outlet pressure",
+    "misalignment": "Motor-pump misalignment",
+    "tankLevel": "Tank level"
+  },
+  "presets": {
+    "current": "Current operation",
+    "healthy": "All healthy",
+    "unbalance": "Unbalance",
+    "chatter": "Chatter",
+    "spindleBearing": "Spindle bearing",
+    "tableEcc": "Eccentric clamping",
+    "cavitation": "Cavitation",
+    "b2bearing": "Critical bearing",
+    "b2overpressure": "Overpressure",
+    "b3misalign": "Misalignment"
+  },
+  "mech": {
+    "base": "Structural base",
+    "unbalance": "Unbalance (1× speed)",
+    "bearing": "Bearing",
+    "cutting": "Cutting load",
+    "chatter": "Chatter",
+    "resonance": "Resonance",
+    "eccentricity": "Eccentricity",
+    "inertia": "Load inertia",
+    "misalignment": "Misalignment",
+    "cavitation": "Cavitation",
+    "hydraulic": "Hydraulic pulsation"
+  },
+  "status": {
+    "normal": "Normal",
+    "attention": "Attention",
+    "critical": "Critical"
+  }
+}

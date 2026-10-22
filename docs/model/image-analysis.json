@@ -1,0 +1,25 @@
+{
+  "identification": "Single open CNC machining center; user identifies GROB G300. Industrial hard-surface object.",
+  "silhouette": "Asymmetric compound cuboid housing. Front aperture framed by narrow tall pillars; exposed service bay on +X. Width/height ~1.2 in reference projection.",
+  "hierarchy": "Base > enclosure > blue roof bands, ribs, fasteners, logos; chamber > horizontal spindle + rotary table > workpiece; service bay > red tank + tool rows; controller on arm.",
+  "relationships": "Table mounted to chamber floor; workpiece clamped above table. Spindle supported from rear wall. Control arm attaches to right pillar. Tank and tool rows sit on side frame.",
+  "materials": "Painted light gray and blue shell, satin metallic bare table and guides, dark rubber bellows, red painted cylinder, luminous control display.",
+  "identity": [
+    "blue crown panels",
+    "white enclosure",
+    "GROB marks",
+    "vertical G300 lettering",
+    "open chamber",
+    "horizontal spindle",
+    "circular rotary table",
+    "right display",
+    "red tank",
+    "tool holder rows",
+    "bellows",
+    "ventilation slits",
+    "fasteners",
+    "panel seams"
+  ],
+  "uncertainty": "Single 707x600 view. Rear side, exact machine dimensions and internal kinematics are not recoverable; inferred. Workpiece is a separate simulation based on PDF p16\u201317. No manufacturing-grade claim.",
+  "suitability": "conditional; suitable for interactive illustrative reconstruction, not metrology"
+}

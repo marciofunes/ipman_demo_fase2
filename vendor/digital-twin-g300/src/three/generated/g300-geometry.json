@@ -1,0 +1,654 @@
+{
+ "source": "img2threejs object-sculpt-spec.json (2.1)",
+ "reference": "csm_Header_G317_offen_e1c2837ffa.png",
+ "units": "m",
+ "frame": "+Z operator front, +X service side, +Y up, origin floor centre",
+ "components": [
+  {
+   "id": "root",
+   "name": "GROB G300 machining centre",
+   "parent": null,
+   "primitive": "box",
+   "size": [
+    2.4,
+    3.0,
+    3.6
+   ],
+   "position": [
+    0,
+    0,
+    0
+   ],
+   "material": "shell-white",
+   "xray": "transparent-shell"
+  },
+  {
+   "id": "plinth",
+   "name": "Base plinth",
+   "parent": "root",
+   "primitive": "box",
+   "size": [
+    2.4,
+    0.12,
+    3.6
+   ],
+   "position": [
+    0,
+    0.06,
+    0
+   ],
+   "material": "shell-grey",
+   "xray": "transparent-shell"
+  },
+  {
+   "id": "front-column",
+   "name": "Front-left column with G300 lettering",
+   "parent": "root",
+   "primitive": "box",
+   "size": [
+    0.65,
+    2.08,
+    0.1
+   ],
+   "position": [
+    -0.875,
+    1.16,
+    1.75
+   ],
+   "material": "shell-white",
+   "xray": "transparent-shell"
+  },
+  {
+   "id": "front-lower-wall",
+   "name": "Work-area front sill",
+   "parent": "root",
+   "primitive": "box",
+   "size": [
+    1.35,
+    0.5,
+    0.1
+   ],
+   "position": [
+    0.125,
+    0.37,
+    1.8
+   ],
+   "material": "shell-white",
+   "xray": "transparent-shell"
+  },
+  {
+   "id": "front-right-pillar",
+   "name": "Front-right frame pillar",
+   "parent": "root",
+   "primitive": "box",
+   "size": [
+    0.4,
+    2.08,
+    0.1
+   ],
+   "position": [
+    1.0,
+    1.16,
+    1.75
+   ],
+   "material": "shell-white",
+   "xray": "transparent-shell"
+  },
+  {
+   "id": "workarea-back",
+   "name": "Work-area rear wall",
+   "parent": "root",
+   "primitive": "box",
+   "size": [
+    1.35,
+    1.58,
+    0.06
+   ],
+   "position": [
+    0.125,
+    1.41,
+    0.2
+   ],
+   "material": "shell-grey",
+   "xray": "transparent-shell"
+  },
+  {
+   "id": "workarea-left",
+   "name": "Work-area left wall with telescopic covers",
+   "parent": "root",
+   "primitive": "box",
+   "size": [
+    0.04,
+    1.58,
+    1.55
+   ],
+   "position": [
+    -0.55,
+    1.41,
+    0.97
+   ],
+   "material": "shell-grey",
+   "xray": "transparent-shell"
+  },
+  {
+   "id": "workarea-right",
+   "name": "Work-area right wall",
+   "parent": "root",
+   "primitive": "box",
+   "size": [
+    0.04,
+    1.58,
+    1.55
+   ],
+   "position": [
+    0.8,
+    1.41,
+    0.97
+   ],
+   "material": "shell-grey",
+   "xray": "transparent-shell"
+  },
+  {
+   "id": "workarea-ceiling",
+   "name": "Work-area ceiling",
+   "parent": "root",
+   "primitive": "box",
+   "size": [
+    1.35,
+    0.04,
+    1.55
+   ],
+   "position": [
+    0.125,
+    2.2,
+    0.97
+   ],
+   "material": "shell-grey",
+   "xray": "transparent-shell"
+  },
+  {
+   "id": "side-wall-front",
+   "name": "Service side wall with windows",
+   "parent": "root",
+   "primitive": "box",
+   "size": [
+    0.06,
+    2.08,
+    2.0
+   ],
+   "position": [
+    1.2,
+    1.16,
+    0.7
+   ],
+   "material": "shell-white",
+   "xray": "transparent-shell"
+  },
+  {
+   "id": "left-wall",
+   "name": "Left closed wall",
+   "parent": "root",
+   "primitive": "box",
+   "size": [
+    0.06,
+    2.08,
+    3.5
+   ],
+   "position": [
+    -1.2,
+    1.16,
+    -0.05
+   ],
+   "material": "shell-white",
+   "xray": "transparent-shell"
+  },
+  {
+   "id": "rear-wall",
+   "name": "Rear closed wall",
+   "parent": "root",
+   "primitive": "box",
+   "size": [
+    2.4,
+    2.08,
+    0.06
+   ],
+   "position": [
+    0,
+    1.16,
+    -1.8
+   ],
+   "material": "shell-white",
+   "xray": "transparent-shell"
+  },
+  {
+   "id": "service-bay",
+   "name": "Open rear service bay",
+   "parent": "root",
+   "primitive": "box",
+   "size": [
+    0.65,
+    2.08,
+    1.5
+   ],
+   "position": [
+    0.88,
+    1.16,
+    -1.05
+   ],
+   "material": "shell-grey",
+   "xray": "transparent-shell"
+  },
+  {
+   "id": "roof-band",
+   "name": "Blue roof band with GROB badges",
+   "parent": "root",
+   "primitive": "box",
+   "size": [
+    2.4,
+    0.35,
+    3.6
+   ],
+   "position": [
+    0,
+    2.375,
+    0
+   ],
+   "material": "grob-blue",
+   "xray": "transparent-shell"
+  },
+  {
+   "id": "roof-cover",
+   "name": "Raised roof cover with louvres",
+   "parent": "root",
+   "primitive": "box",
+   "size": [
+    1.2,
+    0.6,
+    1.6
+   ],
+   "position": [
+    0,
+    2.55,
+    0.2
+   ],
+   "material": "shell-white",
+   "xray": "transparent-shell"
+  },
+  {
+   "id": "hmi-panel",
+   "name": "Control panel on arm",
+   "parent": "side-wall-front",
+   "primitive": "box",
+   "size": [
+    0.1,
+    0.6,
+    0.45
+   ],
+   "position": [
+    1.29,
+    1.45,
+    1.22
+   ],
+   "material": "shell-grey",
+   "xray": "transparent-shell"
+  },
+  {
+   "id": "coolant-pipe",
+   "name": "Coolant return pipe",
+   "parent": "root",
+   "primitive": "cylinder",
+   "size": [
+    0.08,
+    0.6,
+    0.08
+   ],
+   "position": [
+    0.9,
+    0.3,
+    1.9
+   ],
+   "material": "shell-grey",
+   "xray": "transparent-shell"
+  },
+  {
+   "id": "spindle",
+   "name": "Horizontal motor spindle",
+   "parent": "workarea-back",
+   "primitive": "cylinder",
+   "size": [
+    0.22,
+    0.22,
+    0.6
+   ],
+   "position": [
+    0.15,
+    1.3,
+    0.55
+   ],
+   "material": "steel",
+   "xray": "opaque-internal"
+  },
+  {
+   "id": "spindle-motor",
+   "name": "Spindle motor stator (internal)",
+   "parent": "spindle",
+   "primitive": "cylinder",
+   "size": [
+    0.32,
+    0.32,
+    0.36
+   ],
+   "position": [
+    0.15,
+    1.3,
+    0.05
+   ],
+   "material": "motor-grey",
+   "xray": "opaque-internal"
+  },
+  {
+   "id": "trunnion",
+   "name": "Trunnion cradle (A axis)",
+   "parent": "root",
+   "primitive": "box",
+   "size": [
+    0.9,
+    0.42,
+    0.62
+   ],
+   "position": [
+    0.0,
+    0.92,
+    1.2
+   ],
+   "material": "cast-white",
+   "xray": "opaque-internal"
+  },
+  {
+   "id": "rotary-table",
+   "name": "Rotary table (B axis)",
+   "parent": "trunnion",
+   "primitive": "cylinder",
+   "size": [
+    0.56,
+    0.06,
+    0.56
+   ],
+   "position": [
+    0.0,
+    1.02,
+    1.2
+   ],
+   "material": "steel",
+   "xray": "opaque-internal"
+  },
+  {
+   "id": "workpiece",
+   "name": "ABS valve block on fixture",
+   "parent": "rotary-table",
+   "primitive": "box",
+   "size": [
+    0.24,
+    0.3,
+    0.16
+   ],
+   "position": [
+    0.0,
+    1.2,
+    1.2
+   ],
+   "material": "steel",
+   "xray": "opaque-internal"
+  },
+  {
+   "id": "tool-magazine",
+   "name": "Tool magazine rows",
+   "parent": "service-bay",
+   "primitive": "box",
+   "size": [
+    0.12,
+    0.5,
+    1.2
+   ],
+   "position": [
+    0.62,
+    1.75,
+    -1.05
+   ],
+   "material": "steel",
+   "xray": "opaque-internal"
+  },
+  {
+   "id": "pump-hydraulic",
+   "name": "Hydraulic unit, motor + pump (Bomba 2)",
+   "parent": "service-bay",
+   "primitive": "cylinder",
+   "size": [
+    0.2,
+    0.62,
+    0.2
+   ],
+   "position": [
+    0.92,
+    0.75,
+    -1.4
+   ],
+   "material": "motor-grey",
+   "xray": "opaque-internal"
+  },
+  {
+   "id": "pump-coolant",
+   "name": "Coolant pump, motor + pump (Bomba 1)",
+   "parent": "service-bay",
+   "primitive": "cylinder",
+   "size": [
+    0.18,
+    0.5,
+    0.18
+   ],
+   "position": [
+    0.95,
+    0.55,
+    -0.6
+   ],
+   "material": "motor-grey",
+   "xray": "opaque-internal"
+  },
+  {
+   "id": "pump-hp",
+   "name": "High-pressure pump, horizontal (Bomba 3)",
+   "parent": "service-bay",
+   "primitive": "cylinder",
+   "size": [
+    0.16,
+    0.16,
+    0.5
+   ],
+   "position": [
+    0.92,
+    1.28,
+    -1.25
+   ],
+   "material": "motor-grey",
+   "xray": "opaque-internal"
+  },
+  {
+   "id": "accumulator",
+   "name": "Red bladder accumulator",
+   "parent": "service-bay",
+   "primitive": "cylinder",
+   "size": [
+    0.18,
+    0.55,
+    0.18
+   ],
+   "position": [
+    1.0,
+    1.55,
+    -0.6
+   ],
+   "material": "accumulator-red",
+   "xray": "opaque-internal"
+  },
+  {
+   "id": "hydraulic-tank",
+   "name": "Hydraulic oil tank",
+   "parent": "service-bay",
+   "primitive": "box",
+   "size": [
+    0.5,
+    0.38,
+    0.5
+   ],
+   "position": [
+    0.9,
+    0.31,
+    -1.4
+   ],
+   "material": "shell-grey",
+   "xray": "opaque-internal"
+  },
+  {
+   "id": "electrical-cabinet",
+   "name": "Electrical cabinet with 3-phase meter",
+   "parent": "service-bay",
+   "primitive": "box",
+   "size": [
+    0.08,
+    0.6,
+    0.5
+   ],
+   "position": [
+    0.58,
+    0.85,
+    -0.85
+   ],
+   "material": "shell-grey",
+   "xray": "opaque-internal"
+  }
+ ],
+ "materials": {
+  "shell-white": {
+   "color": "#E7E9EA",
+   "metalness": 0.1,
+   "roughness": 0.55
+  },
+  "shell-grey": {
+   "color": "#C3C8CD",
+   "metalness": 0.15,
+   "roughness": 0.6
+  },
+  "grob-blue": {
+   "color": "#1F4FA0",
+   "metalness": 0.2,
+   "roughness": 0.45
+  },
+  "steel": {
+   "color": "#A9AEB4",
+   "metalness": 0.85,
+   "roughness": 0.3
+  },
+  "cast-white": {
+   "color": "#ECEDEC",
+   "metalness": 0.05,
+   "roughness": 0.5
+  },
+  "accumulator-red": {
+   "color": "#C42A2A",
+   "metalness": 0.2,
+   "roughness": 0.35
+  },
+  "glass": {
+   "color": "#8FA3B3",
+   "metalness": 0.0,
+   "roughness": 0.05
+  },
+  "motor-grey": {
+   "color": "#B7BCC2",
+   "metalness": 0.4,
+   "roughness": 0.45
+  },
+  "hmi": {
+   "color": "#5AA7E0",
+   "metalness": 0.0,
+   "roughness": 0.2
+  },
+  "rubber-black": {
+   "color": "#1E2226",
+   "metalness": 0.0,
+   "roughness": 0.7
+  }
+ },
+ "animationAnchors": [
+  {
+   "id": "spindle-rotation",
+   "component": "spindle",
+   "axis": [
+    0,
+    0,
+    1
+   ],
+   "kind": "rotate",
+   "notes": "rpm from what-if parameter"
+  },
+  {
+   "id": "spindle-z-feed",
+   "component": "spindle",
+   "axis": [
+    0,
+    0,
+    1
+   ],
+   "kind": "translate",
+   "range": [
+    0,
+    0.22
+   ]
+  },
+  {
+   "id": "trunnion-a",
+   "component": "trunnion",
+   "axis": [
+    1,
+    0,
+    0
+   ],
+   "kind": "rotate",
+   "range": [
+    -1.57,
+    0.5
+   ]
+  },
+  {
+   "id": "table-b",
+   "component": "rotary-table",
+   "axis": [
+    0,
+    1,
+    0
+   ],
+   "kind": "rotate",
+   "notes": "continuous / indexing"
+  },
+  {
+   "id": "pump-shafts",
+   "component": "pump-hydraulic",
+   "axis": [
+    0,
+    1,
+    0
+   ],
+   "kind": "rotate"
+  },
+  {
+   "id": "magazine-chain",
+   "component": "tool-magazine",
+   "axis": [
+    0,
+    0,
+    1
+   ],
+   "kind": "translate"
+  }
+ ]
+}

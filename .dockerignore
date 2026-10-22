@@ -1,0 +1,10 @@
+node_modules
+dist
+tools
+.git
+docs/reference
+test-results
+playwright-report
+releases
+vendor
+docs/imported-twin

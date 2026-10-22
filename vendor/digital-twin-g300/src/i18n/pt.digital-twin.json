@@ -1,0 +1,116 @@
+{
+  "twin": {
+    "title": "Digital Twin | GROB G300",
+    "subtitle": "Gêmeo digital do centro de usinagem com cenários what-if",
+    "crumb": "Digital Twin",
+    "loading": "Carregando gêmeo digital…",
+    "loadError": "Falha ao carregar o modelo 3D",
+    "loadErrorBody": "O navegador não conseguiu inicializar o WebGL ou carregar a geometria. Os indicadores e cenários continuam disponíveis.",
+    "noWebgl": "WebGL indisponível neste navegador.",
+    "cards": {
+      "rms": "RMS vibração",
+      "kurtosis": "Kurtosis",
+      "crest": "Crest factor",
+      "current": "Corrente",
+      "power": "Potência ativa",
+      "pf": "Fator de potência",
+      "condition": "Condição"
+    },
+    "of": "{{name}}",
+    "xray": "Raio-X",
+    "labels": "Rótulos",
+    "cameras": {
+      "overview": "Máquina",
+      "workarea": "Área de usinagem",
+      "service": "Bombas e agregados",
+      "xray": "Interno"
+    },
+    "components": {
+      "spindle": "Spindle",
+      "table": "Mesa giratória",
+      "bomba1": "Bomba 1 · refrigeração",
+      "bomba2": "Bomba 2 · hidráulica",
+      "bomba3": "Bomba 3 · alta pressão"
+    },
+    "componentsShort": {
+      "spindle": "Spindle",
+      "table": "Mesa giratória",
+      "bomba1": "Bomba 1",
+      "bomba2": "Bomba 2",
+      "bomba3": "Bomba 3"
+    },
+    "electricalLabel": "Elétrica trifásica",
+    "scenarios": "Cenários what-if",
+    "component": "Componente",
+    "parameters": "Parâmetros de processo",
+    "reset": "Restaurar",
+    "presets": "Cenários prontos",
+    "rmsLive": "RMS de vibração · últimos 60 s",
+    "contributions": "Contribuições para a vibração",
+    "cycle": "Ciclo de usinagem",
+    "phase": "Fase",
+    "face": "Face {{n}} de 5",
+    "parts": "Peças concluídas",
+    "phases": {
+      "index": "Rotação da mesa",
+      "approach": "Aproximação",
+      "cut": "Fresamento",
+      "retract": "Retorno",
+      "tilt": "Inclinação do berço"
+    },
+    "chatter": "Chatter: profundidade acima do limite de estabilidade",
+    "hint": "Arraste para girar, role para aproximar, clique em um componente para selecioná-lo",
+    "load": "Carga",
+    "voltage": "Tensão",
+    "apparent": "S",
+    "reactive": "Q",
+    "rotation": "Rotação",
+    "attentionAt": "atenção ≥ {{v}}",
+    "criticalAt": "crítico ≥ {{v}}"
+  },
+  "params": {
+    "spindleSpeed": "Rotação do spindle",
+    "feed": "Avanço",
+    "depth": "Profundidade de corte",
+    "unbalance": "Desbalanceamento da ferramenta",
+    "bearingWear": "Desgaste do rolamento",
+    "toolWear": "Desgaste da ferramenta",
+    "tableSpeed": "Velocidade da mesa",
+    "load": "Massa peça + dispositivo",
+    "eccentricity": "Excentricidade de fixação",
+    "frequency": "Frequência do inversor",
+    "pressure": "Pressão de saída",
+    "misalignment": "Desalinhamento motor-bomba",
+    "tankLevel": "Nível do tanque"
+  },
+  "presets": {
+    "current": "Operação atual",
+    "healthy": "Tudo saudável",
+    "unbalance": "Desbalanceamento",
+    "chatter": "Chatter",
+    "spindleBearing": "Rolamento do spindle",
+    "tableEcc": "Fixação excêntrica",
+    "cavitation": "Cavitação",
+    "b2bearing": "Rolamento crítico",
+    "b2overpressure": "Sobrepressão",
+    "b3misalign": "Desalinhamento"
+  },
+  "mech": {
+    "base": "Base estrutural",
+    "unbalance": "Desbalanceamento (1× rotação)",
+    "bearing": "Rolamento",
+    "cutting": "Esforço de corte",
+    "chatter": "Chatter",
+    "resonance": "Ressonância",
+    "eccentricity": "Excentricidade",
+    "inertia": "Inércia da carga",
+    "misalignment": "Desalinhamento",
+    "cavitation": "Cavitação",
+    "hydraulic": "Pulsação hidráulica"
+  },
+  "status": {
+    "normal": "Normal",
+    "attention": "Atenção",
+    "critical": "Crítico"
+  }
+}

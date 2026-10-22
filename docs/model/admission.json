@@ -1,0 +1,14 @@
+{
+  "admitted": true,
+  "reasons": [],
+  "provenance": {
+    "viewpoint": "three-quarter",
+    "sourcePath": "C:\\Users\\marcio.funes\\OneDrive - Instituto de Pesquisas Eldorado\\Documents\\Projetos Eldorado\\Bosch\\IPMan_Demo_Fase2\\public\\reference\\g300.png",
+    "width": 707,
+    "height": 600,
+    "foregroundCoverage": 0.5163,
+    "largestComponentFraction": 1.0,
+    "pHash": 18219554842023095456,
+    "duplicateOfHash": null
+  }
+}

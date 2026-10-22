@@ -1,0 +1,7 @@
+[
+ {"id": "blue-band-badges", "score": 0.85, "notes": "Faixa azul contínua com selos GROB na frente e na lateral."},
+ {"id": "g300-column", "score": 0.82, "notes": "Coluna esquerda com letreiro vertical G300 e puxador."},
+ {"id": "open-work-area", "score": 0.82, "notes": "Berço branco com mesa giratória e spindle horizontal saindo da parede traseira."},
+ {"id": "hmi-arm", "score": 0.8, "notes": "IHM com tela e teclado no braço do lado de serviço."},
+ {"id": "service-bay", "score": 0.72, "notes": "Baia aberta com acumulador vermelho, motores e magazine; menos densa que a referência."}
+]

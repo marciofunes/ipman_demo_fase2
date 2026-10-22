@@ -1,0 +1,19 @@
+FAIL
+warning: quality: preSpecAssessment has unresolved unknowns before implementation
+warning: quality: material 'shell' textureResolution must be >= 1024
+warning: quality: material 'blue' needs usable referencePbr extracted from source pixels
+warning: quality: material 'metal' needs usable referencePbr extracted from source pixels
+warning: quality: material 'dark' needs usable referencePbr extracted from source pixels
+warning: quality: material 'red' needs usable referencePbr extracted from source pixels
+warning: quality: material 'black' needs usable referencePbr extracted from source pixels
+warning: quality: material 'screen' needs usable referencePbr extracted from source pixels
+warning: quality: lighting-pass needs contact shadow or ground shadow behavior
+error: strict quality failure: preSpecAssessment has unresolved unknowns before implementation
+error: strict quality failure: material 'shell' textureResolution must be >= 1024
+error: strict quality failure: material 'blue' needs usable referencePbr extracted from source pixels
+error: strict quality failure: material 'metal' needs usable referencePbr extracted from source pixels
+error: strict quality failure: material 'dark' needs usable referencePbr extracted from source pixels
+error: strict quality failure: material 'red' needs usable referencePbr extracted from source pixels
+error: strict quality failure: material 'black' needs usable referencePbr extracted from source pixels
+error: strict quality failure: material 'screen' needs usable referencePbr extracted from source pixels
+error: strict quality failure: lighting-pass needs contact shadow or ground shadow behavior
