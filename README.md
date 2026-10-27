@@ -189,3 +189,16 @@ npm run test:e2e
 Vitest/Testing Library cobrem navegação, contexto de filtros, idiomas, as três telas de inspeção, filtros e revisão do histórico, consulta/rollback/validação de referência, falha de imagem e cálculos what-if (baseline, monotonicidade e limites). Playwright cobre navegação real, inspeção, inglês, evidências, 3D WebGL com Chromium/SwiftShader, controles what-if e layout móvel. O build de produção e a prévia Vite (porta 4173) são iniciados automaticamente se não estiverem ativos. Capturas em `docs/qa/`. Compilação TypeScript estrita antes do build. `npm audit` verifica dependências.
 
 Limite do ambiente de entrega: Docker não estava instalado; o comando Compose não pôde ser executado aqui. O build estático e os testes são executados no host; não confunda essa validação com um teste do contêiner. Não é necessário serviço externo ou chave de API para executar a demonstração.
+
+
+### Atualização de medições e histórico (27/10/2026)
+
+- A peça no Digital Twin é somente o bloco metálico inferior, com as inscrições originais e a textura sem os furos escuros. Tampa, cilindros e círculos laterais foram removidos; o percurso do spindle foi ajustado à altura do bloco. Cenários e cálculos what-if permanecem iguais.
+- Os dashboards analíticos apresentam a aceleração RMS em **mm/s²**. Os valores são sementes de aceleração em `src/data.ts`, não uma conversão matemática de velocidade. O modelo what-if importado mantém sua grandeza própria de velocidade RMS em mm/s.
+- As cinco telas analíticas incluem **Grandezas elétricas**, com tensão RMS entre fases (V), corrente RMS (A), potência ativa (kW), reativa (kvar), aparente (kVA), fator de potência e frequência (Hz). Clique no card para selecionar a tendência. Todos seguem os filtros globais e o relógio de um segundo, em português e inglês.
+- As sementes elétricas estão centralizadas em `electricalSeeds`, em `src/data.ts`. `src/electrical.ts` modela circuitos trifásicos equilibrados e senoidais: S = √3 × U × I / 1000, P = S × FP e Q = √(S² − P²). Para múltiplos ativos, tensão/corrente/frequência são médias; P/Q são somas; S/FP são calculados a partir dos totais de P/Q. Não se somam tensões. O período muda a tendência histórica, não multiplica a leitura instantânea.
+- O histórico inclui **480 peças em aproximadamente oito horas**, cerca de 60 peças/hora, mantendo os cinco casos de evidência originais. A janela selecionável de 1, 4 ou 8 horas termina no registro mais recente; as datas de evidência são preservadas. Cards contam a janela, e busca/resultado refinam a lista. A tabela tem linhas compactas, cabeçalho fixo, rolagem própria e acesso às evidências de qualquer registro.
+- Testes novos: `src/electrical.test.ts` valida as identidades de potência, agregações, filtros, atualização e consistência do histórico. `e2e/measurements.spec.ts` verifica interação, unidades, tradução, densidade e rolagem no navegador.
+
+
+A textura do bloco foi editada com a ferramenta nativa `image_gen` e está em `public/img/abs-face-metal.png`; a fotografia anterior `public/img/abs-face.jpg` permanece disponível para referência. Prompt e processo: [textura da peça](docs/model/WORKPIECE-TEXTURE.md).

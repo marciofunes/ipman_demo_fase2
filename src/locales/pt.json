@@ -372,5 +372,21 @@
   "Perda de pacotes e sinal congelado": "Perda de pacotes e sinal congelado",
   "Sobrecarga e saturação do sensor": "Sobrecarga e saturação do sensor",
   "Estável": "Estável",
-  "Monitoramento contínuo": "Monitoramento contínuo"
+  "Monitoramento contínuo": "Monitoramento contínuo",
+  "Grandezas elétricas": "Grandezas elétricas",
+  "Tensão entre fases": "Tensão entre fases",
+  "Corrente RMS": "Corrente RMS",
+  "Potência ativa": "Potência ativa",
+  "Potência reativa": "Potência reativa",
+  "Potência aparente": "Potência aparente",
+  "Fator de potência": "Fator de potência",
+  "Frequência elétrica": "Frequência elétrica",
+  "Medição trifásica por ativo · atualização a cada segundo": "Medição trifásica por ativo · atualização a cada segundo",
+  "Grandeza no gráfico": "Grandeza no gráfico",
+  "Tendência elétrica": "Tendência elétrica",
+  "Tensão, corrente e frequência: médias dos ativos selecionados. P e Q: somas. S e FP: resultantes de P e Q.": "Tensão, corrente e frequência: médias dos ativos selecionados. P e Q: somas. S e FP: resultantes de P e Q.",
+  "Inspeções na janela": "Inspeções na janela",
+  "Janela do histórico": "Janela do histórico",
+  "peças na janela": "peças na janela",
+  "Lista de inspeções": "Lista de inspeções"
 }

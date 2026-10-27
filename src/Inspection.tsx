@@ -433,13 +433,18 @@ export function HistoryScreen({
   onReview: (i: Inspection, note: string) => void;
 }) {
   const { t, locale } = useI18n();
+  const [windowHours, setWindowHours] = useState(8);
   const [search, setSearch] = useState("");
   const [result, setResult] = useState("Todos");
   const [detail, setDetail] = useState<Inspection | null>(null);
   const [note, setNote] = useState("");
   const [decision, setDecision] = useState<Outcome>("Revisão");
   const [saved, setSaved] = useState(false);
-  const filtered = history.filter(
+  const timestamp = (i: Inspection) => Date.parse(`${i.date}T${i.time}Z`);
+  const latest = Math.max(0, ...history.map(timestamp));
+  const windowed = history.filter(i => timestamp(i) > latest - windowHours * 3600000)
+    .sort((a, b) => timestamp(b) - timestamp(a));
+  const filtered = windowed.filter(
     (i) =>
       (result === "Todos" || i.result === result) &&
       `${i.id} ${i.pn}`.includes(search),
@@ -464,27 +469,27 @@ export function HistoryScreen({
       </div>
       <div className="stats five">
         <Stat
-          label={t("Inspeções hoje")}
-          value={mockData.inspection.today.toLocaleString(locale)}
+          label={t("Inspeções na janela")}
+          value={windowed.length.toLocaleString(locale)}
         />
         <Stat
           label={t("Aprovadas")}
-          value={mockData.inspection.approved.toLocaleString(locale)}
+          value={windowed.filter(i => i.result === "Aprovado").length.toLocaleString(locale)}
           tone="good"
         />
         <Stat
           label={t("Reprovadas")}
-          value={mockData.inspection.rejected}
+          value={windowed.filter(i => i.result === "Reprovado").length}
           tone="danger"
         />
         <Stat
           label={t("Revisão")}
-          value={mockData.inspection.review}
+          value={windowed.filter(i => i.result === "Revisão").length}
           tone="warning"
         />
-        <Stat label={t("Retenção")} value={t("90 dias (simulado)")} />
+        <Stat label={t("Janela do histórico")} value={`${windowHours} h`} />
       </div>
-      <Card title={t("Inspeções recentes")}>
+      <Card title={t("Inspeções recentes")} className="inspection-history-card">
         <div className="history-filters">
           <label className="search-box">
             <Search size={17} />
@@ -497,7 +502,7 @@ export function HistoryScreen({
           </label>
           <label>
             {t("Resultado")}
-            <select value={result} onChange={(e) => setResult(e.target.value)}>
+            <select aria-label={t("Resultado")} value={result} onChange={(e) => setResult(e.target.value)}>
               {["Todos", "Aprovado", "Reprovado", "Revisão"].map((v) => (
                 <option key={v} value={v}>
                   {t(v)}
@@ -506,7 +511,17 @@ export function HistoryScreen({
             </select>
           </label>
         </div>
-        <div className="table-scroll">
+        <div className="history-window-bar">
+          <label>{t("Janela do histórico")}
+            <select value={windowHours} onChange={e => setWindowHours(Number(e.target.value))}>
+              {[1, 4, 8].map(hours => <option key={hours} value={hours}>{hours} h</option>)}
+            </select>
+          </label>
+          <span role="status">{filtered.length.toLocaleString(locale)} / {windowed.length.toLocaleString(locale)} {t("peças na janela")}
+            {windowed.length > 0 && <> · {new Date(windowed[0].date + "T12:00:00").toLocaleDateString(locale)} · {windowed.at(-1)!.time} – {windowed[0].time}</>}
+          </span>
+        </div>
+        <div className="table-scroll inspection-history-scroll" role="region" aria-label={t("Lista de inspeções")} tabIndex={0}>
           <table>
             <thead>
               <tr>

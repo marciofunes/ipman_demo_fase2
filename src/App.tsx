@@ -57,7 +57,7 @@ function AppShell() {
     period: 'Últimas 8 horas',
   });
   const [inspection, setInspection] = useState<Inspection>(mockData.inspection.inspections[0]);
-  const [history, setHistory] = useState(mockData.inspection.inspections);
+  const [history, setHistory] = useState(mockData.inspection.history);
   const [references, setReferences] = useState(mockData.references);
   const [active, setActive] = useState(12);
   const [, setReviews] = useState<Record<string, string>>({});

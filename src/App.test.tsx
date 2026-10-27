@@ -134,7 +134,7 @@ describe("visual inspection workflows", () => {
     await u.selectOptions(screen.getByLabelText("Resultado"), "Reprovado");
     expect(
       screen.getAllByRole("button", { name: /Abrir evidência/ }),
-    ).toHaveLength(2);
+    ).toHaveLength(mockData.inspection.history.filter(i => i.result === "Reprovado").length);
     await u.click(
       screen.getByRole("button", { name: "Abrir evidência 2026-054631" }),
     );
@@ -155,7 +155,7 @@ describe("visual inspection workflows", () => {
     await u.click(within(dialog).getByRole("button", { name: "Fechar" }));
     expect(
       screen.getAllByRole("button", { name: /Abrir evidência/ }),
-    ).toHaveLength(1);
+    ).toHaveLength(mockData.inspection.history.filter(i => i.result === "Reprovado").length - 1);
     await u.type(
       screen.getByLabelText("Buscar identificador ou PN"),
       "no-match",

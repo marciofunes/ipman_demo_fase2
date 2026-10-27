@@ -3,6 +3,7 @@ import { ArrowUpRight, Activity, Check, Clock } from 'lucide-react';
 import { useLive, formatClock } from './live';
 import { useI18n } from './i18n';
 import { Badge, Card, LineChart, Stat } from './ui';
+import { ElectricalPanel } from './ElectricalPanel';
 import { queryAnalytics } from './analytics';
 export type Filters = { machine: string; asset: string; period: string };
 export function Dashboards({
@@ -70,6 +71,7 @@ export function Dashboards({
       </div>
     </div>
   );
+  const electrical = <ElectricalPanel data={mockData.plant.electrical} hours={mockData.hours} />;
   const queue = (
     <Card title={t('Fila de investigação')}>
       <div className="queue">
@@ -153,7 +155,7 @@ export function Dashboards({
                   <span>{t(a.status)}</span>
                   <div className="asset-bottom">
                     <span>
-                      {fmt(a.rms * factor)} <small>mm/s</small>
+                      {fmt(a.rms * factor)} <small>mm/s²</small>
                     </span>
                     <ArrowUpRight size={15} />
                   </div>
@@ -166,6 +168,7 @@ export function Dashboards({
         <Card title={t('Tendência consolidada')}>
           <LineChart hours={mockData.hours} values={series} label={t('Tendência consolidada')} />
         </Card>
+        {electrical}
       </div>
     );
   if (page === 'Qualidade dos dados')
@@ -268,6 +271,7 @@ export function Dashboards({
             {t('Clipping')}
           </p>
         </Card>
+        {electrical}
       </div>
     );
   if (page === 'Referências')
@@ -364,6 +368,7 @@ export function Dashboards({
             </div>
           </Card>
         </div>
+        {electrical}
       </div>
     );
   if (page === 'Condição dos ativos')
@@ -389,7 +394,7 @@ export function Dashboards({
               <h3>{t(a.name)}</h3>
               <Badge text={a.status} />
               <strong className="condition-value">
-                {fmt(a.rms)} <small>mm/s</small>
+                {fmt(a.rms)} <small>mm/s²</small>
               </strong>
               <button
                 className="text-link"
@@ -438,6 +443,7 @@ export function Dashboards({
             label={t('Evidências da condição')}
           />
         </Card>
+        {electrical}
       </div>
     );
   return (
@@ -540,6 +546,7 @@ export function Dashboards({
           </form>
         </Card>
       </div>
+      {electrical}
     </div>
   );
 }

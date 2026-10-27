@@ -1,3 +1,4 @@
+import { queryElectrical } from './electrical';
 import { machineProfiles, mockData } from './data';
 export type AnalyticsFilters = { machine: string; asset: string; period: string };
 export const DEFAULT_FILTERS: AnalyticsFilters = {
@@ -108,7 +109,7 @@ export function queryAnalytics(filters: AnalyticsFilters, tick: number) {
       series,
       quality,
       queue,
-      metrics: { current: avg * 3.1, power: avg * 1.8, pf: Math.max(0.6, 0.98 - max * 0.012) },
+      electrical: queryElectrical(filters, tick),
     },
     analytics: {
       ...mockData.analytics,

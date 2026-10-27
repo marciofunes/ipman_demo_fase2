@@ -2,7 +2,7 @@
 // contract; replace demoRepository methods with an API adapter when needed.
 /** Machine and sensor profiles: two healthy CNCs, mechanical/electrical faults,
  * one critical CNC, plus distinct acquisition failures on deburring equipment.
- * Each sensor tuple is [RMS mm/s, availability %, gaps, frozen, clipping, sync errors]. */
+ * Each sensor tuple is [RMS acceleration mm/s², availability %, gaps, frozen, clipping, sync errors]. */
 export const machineProfiles = [
   {
     name: 'GROB G300 • 01',
@@ -67,6 +67,20 @@ export const machineProfiles = [
     },
   },
 ] as const;
+/** Electrical seeds: line-to-line RMS voltage, load multiplier, displacement PF and Hz.
+ * Balanced three-phase, sinusoidal supply; branch nominal currents are in amperes. */
+export const electricalSeeds = {
+  machines: [
+    { voltage: 400, load: 0.68, pf: 0.96, frequency: 60 },
+    { voltage: 398, load: 0.79, pf: 0.94, frequency: 60.02 },
+    { voltage: 389, load: 1.04, pf: 0.84, frequency: 59.94 },
+    { voltage: 369, load: 1.31, pf: 0.69, frequency: 59.82 },
+    { voltage: 402, load: 0.73, pf: 0.91, frequency: 60.01 },
+    { voltage: 381, load: 1.16, pf: 0.79, frequency: 59.91 },
+  ],
+  nominalCurrent: { Spindle: 28, 'Bomba 1': 6.2, 'Bomba 2': 9.5, 'Bomba 3': 4.1,
+    'Motor rebarba': 17, 'Bomba rebarba': 5.5 } as Record<string, number>,
+};
 export function assetOptions(machine: string) {
   return [
     ...new Set(
@@ -257,6 +271,20 @@ const inspections: Inspection[] = [
           : { ...f },
   ),
 }));
+// Eight-hour production window: 480 pieces, approximately 60 pieces/hour.
+// Keep the five original evidence cases; older records have unique IDs and immutable evidence.
+const inspectionHistory: Inspection[] = [
+  ...inspections,
+  ...Array.from({ length: 475 }, (_, index): Inspection => {
+    const template = inspections[index % 37 === 0 ? 3 : index % 19 === 0 ? 4 : index % 2 + 1];
+    const timestamp = new Date(Date.UTC(2026, 8, 24, 14, 30, 31) - (index + 1) * 60000);
+    return { ...template, id: `2026-${String(54626 - index).padStart(6, '0')}`,
+      date: timestamp.toISOString().slice(0, 10), time: timestamp.toISOString().slice(11, 19),
+      fields: template.fields.map(field => ({ ...field,
+        ...(field.id === 'Field 1' ? { expected: template.pn, detected: template.pn } : {}) })),
+    };
+  }),
+];
 const pns = Object.fromEntries(
   ['265258072', '265294488', '265259836'].map((pn, i) => [
     pn,
@@ -352,6 +380,7 @@ export const mockData = {
   },
   inspection: {
     inspections,
+    history: inspectionHistory,
     today: 1284,
     approved: 1251,
     rejected: 28,

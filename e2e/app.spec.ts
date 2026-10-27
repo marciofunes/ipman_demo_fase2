@@ -32,6 +32,9 @@ test('imported 3D, presets, labels, xray, cameras and language', async ({ page }
     .click();
   await expect(page.locator('canvas')).toBeVisible();
   await expect(page.locator('.twin-loading')).not.toBeVisible({ timeout: 60000 });
+  await page.getByRole('button', { name: 'Área de usinagem', exact: true }).click();
+  await page.waitForTimeout(2500); // Let the camera transition finish before visual review.
+  await page.screenshot({ path: 'docs/qa/twin-workpiece.png' });
   await page.getByTestId('preset-healthy').click();
   await expect(page.getByTestId('twin-condition')).toContainText('Normal');
   await page.getByTestId('preset-spindleBearing').click();

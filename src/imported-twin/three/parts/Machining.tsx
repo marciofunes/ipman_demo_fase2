@@ -42,9 +42,11 @@ function useMachining() {
     sh.cycle = c;
     // posição do carro (X/Y) do spindle
     const tiltFrac = Math.min(1, Math.abs(c.A) / (Math.PI / 2));
-    const yBase = 1.19 - 0.19 * tiltFrac;
-    sh.carriage.set(c.tx * 0.07, yBase + c.ty * (c.face === 4 ? 0.05 : 0.055));
-    const travel = c.face === 4 ? 0.315 : c.face % 2 === 0 ? 0.53 : 0.5;
+    const yBase = 1.12 - 0.12 * tiltFrac;
+    sh.carriage.set(c.tx * 0.07, yBase + c.ty * (c.face === 4 ? 0.05 : 0.03));
+    // At B=90/270 the front half-extent is 0.14 m, at B=180/360 it is
+    // 0.085 m; after A=-90 the top plane is z=1.3-0.17. Cut 5 mm into each face.
+    const travel = c.face === 4 ? 0.475 : c.face % 2 === 0 ? 0.505 : 0.56;
     sh.tip.set(sh.carriage.x, sh.carriage.y, TIP_RETRACTED + travel * c.z);
     sh.spin += dt * st.live.spindle.shaftRpm * 0.0032;
     const key = `${c.face}|${c.phase}|${c.parts}`;
@@ -83,7 +85,9 @@ function Spindle({
       ram.current.position.z = 0.24 + ext / 2;
     }
     if (rotor.current) rotor.current.rotation.z = sh.spin;
-    if (motorRotor.current) motorRotor.current.rotation.z = sh.spin;
+    // CylinderGeometry's shaft is local Y. The motor parent aligns Y with the
+    // spindle's horizontal Z axis; spinning around local Z would make it tumble.
+    if (motorRotor.current) motorRotor.current.rotation.y = sh.spin;
   });
 
   return (
@@ -152,17 +156,6 @@ function Spindle({
           >
             <cylinderGeometry args={[0.09, 0.11, 0.05, 32]} />
           </mesh>
-          {/* bicos de refrigeração */}
-          {[-1, 1].map((s) => (
-            <mesh
-              key={s}
-              position={[s * 0.08, 0.09, 0.5]}
-              rotation={[Math.PI / 2 - 0.35, 0, -s * 0.5]}
-              material={pm.brass}
-            >
-              <cylinderGeometry args={[0.008, 0.01, 0.1, 8]} />
-            </mesh>
-          ))}
           {/* parte girante: nariz, porta-ferramenta HSK e fresa */}
           <group ref={rotor}>
             <mesh position={[0, 0, 0.48]} rotation={[Math.PI / 2, 0, 0]} material={pm.steel}>
@@ -197,65 +190,20 @@ function Spindle({
 /* --------------------------------------------------------------- mesa */
 
 function Workpiece() {
-  const [face, housing] = useTexture(['/img/abs-face.jpg', '/img/abs-housing.jpg']);
+  const face = useTexture('/img/abs-face-metal.png');
   face.colorSpace = THREE.SRGBColorSpace;
-  housing.colorSpace = THREE.SRGBColorSpace;
-  const mats = useMemo(() => {
-    const alu = new THREE.MeshStandardMaterial({
-      color: '#cfd3d8',
-      metalness: 0.7,
-      roughness: 0.3,
-    });
-    const photo = new THREE.MeshStandardMaterial({ map: face, metalness: 0.35, roughness: 0.42 });
-    // ordem das faces: +x, −x, +y, −y, +z, −z (a −z é a face gravada voltada ao spindle)
-    return {
-      block: [alu, alu, alu, alu, photo, photo],
-      housingFront: new THREE.MeshStandardMaterial({ map: housing, roughness: 0.6 }),
-      black: new THREE.MeshStandardMaterial({ color: '#1f2226', roughness: 0.55 }),
-    };
-  }, [face, housing]);
+  const materials = useMemo(() => {
+    const alu = new THREE.MeshStandardMaterial({ color: '#cfd3d8', metalness: 0.7, roughness: 0.3 });
+    const engraving = new THREE.MeshStandardMaterial({ map: face, metalness: 0.35, roughness: 0.42 });
+    // Preserve the original engraved faces; the manufactured part is only the metal blank.
+    return [alu, alu, alu, alu, engraving, engraving];
+  }, [face]);
   return (
-    <group position={[0, 0.07, 0]} userData={{ noTint: true }}>
-      <mesh
-        position={[0, 0.05, 0]}
-        material={mats.block}
-        castShadow
-        userData={{ noTint: true }}
-        rotation={[0, Math.PI, 0]}
-      >
+    <group name="workpiece" position={[0, 0.07, 0]} userData={{ noTint: true }}>
+      <mesh name="engraved-metal-block" position={[0, 0.05, 0]} material={materials}
+        castShadow userData={{ noTint: true }} rotation={[0, Math.PI, 0]}>
         <boxGeometry args={[0.28, 0.1, 0.17]} />
       </mesh>
-      <RoundedBox
-        args={[0.27, 0.13, 0.155]}
-        radius={0.02}
-        smoothness={3}
-        position={[0, 0.165, 0.005]}
-        material={mats.black}
-        castShadow
-        userData={{ noTint: true }}
-      />
-      {[-0.08, 0.08].map((x) => (
-        <mesh
-          key={x}
-          position={[x, 0.17, -0.085]}
-          material={mats.black}
-          userData={{ noTint: true }}
-        >
-          <cylinderGeometry args={[0.022, 0.022, 0.13, 20]} />
-        </mesh>
-      ))}
-      {/* furos roscados da face lateral */}
-      {[-0.1, -0.035, 0.035, 0.1].map((x) => (
-        <mesh
-          key={x}
-          position={[x, 0.065, 0.086]}
-          rotation={[Math.PI / 2, 0, 0]}
-          userData={{ noTint: true }}
-        >
-          <cylinderGeometry args={[0.016, 0.016, 0.004, 20]} />
-          <meshStandardMaterial color="#6f757b" metalness={0.8} roughness={0.25} />
-        </mesh>
-      ))}
     </group>
   );
 }

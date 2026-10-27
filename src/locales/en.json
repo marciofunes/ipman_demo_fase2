@@ -372,5 +372,21 @@
   "Perda de pacotes e sinal congelado": "Packet loss and frozen signal",
   "Sobrecarga e saturação do sensor": "Overload and sensor clipping",
   "Estável": "Stable",
-  "Monitoramento contínuo": "Continuous monitoring"
+  "Monitoramento contínuo": "Continuous monitoring",
+  "Grandezas elétricas": "Electrical measurements",
+  "Tensão entre fases": "Line-to-line voltage",
+  "Corrente RMS": "RMS current",
+  "Potência ativa": "Active power",
+  "Potência reativa": "Reactive power",
+  "Potência aparente": "Apparent power",
+  "Fator de potência": "Power factor",
+  "Frequência elétrica": "Electrical frequency",
+  "Medição trifásica por ativo · atualização a cada segundo": "Three-phase measurements per asset · updated every second",
+  "Grandeza no gráfico": "Chart measurement",
+  "Tendência elétrica": "Electrical trend",
+  "Tensão, corrente e frequência: médias dos ativos selecionados. P e Q: somas. S e FP: resultantes de P e Q.": "Voltage, current and frequency: selected asset averages. P and Q: sums. S and PF: derived from total P and Q.",
+  "Inspeções na janela": "Inspections in window",
+  "Janela do histórico": "History window",
+  "peças na janela": "parts in window",
+  "Lista de inspeções": "Inspection list"
 }

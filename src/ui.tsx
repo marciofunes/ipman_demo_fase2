@@ -108,11 +108,15 @@ export function LineChart({
   reference = false,
   label,
   hours,
+  unit = "RMS · mm/s²",
+  scaleMax,
 }: {
   values: number[];
   reference?: boolean;
   label: string;
   hours?: number;
+  unit?: string;
+  scaleMax?: number;
 }) {
   const { t, locale } = useI18n(),
     { now } = useLive();
@@ -136,11 +140,11 @@ export function LineChart({
   }, []);
   const width = Math.max(120, size.width),
     height = Math.max(70, size.height),
-    left = 32,
+    left = 44,
     right = width - 12,
     top = 12,
     bottom = height - 27;
-  const max = Math.max(5, Math.ceil(Math.max(...values)));
+  const max = scaleMax ?? Math.max(5, Math.ceil(Math.max(...values)));
   const y = (value: number) => bottom - ((bottom - top) * value) / max;
   const points = values
     .map(
@@ -215,7 +219,7 @@ export function LineChart({
             {t('Referência')}
           </span>
         )}
-        <span>RMS · mm/s</span>
+        <span>{unit}</span>
       </div>
     </div>
   );
