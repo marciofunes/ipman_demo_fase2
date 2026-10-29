@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { CycleMachine, indexSeconds } from './twin/cycle';
+import { indexSeconds } from './twin/cycle';
 import {
   PRESETS,
   THRESHOLDS,
@@ -118,33 +118,5 @@ describe('modelo what-if', () => {
       cycleSeconds(defaultParams().spindle),
     );
     expect(indexSeconds(20)).toBeLessThan(indexSeconds(5));
-  });
-});
-
-describe('ciclo de usinagem na mesa giratória', () => {
-  it('percorre indexação, aproximação, corte e retorno e gira a mesa 90° por face', () => {
-    const m = new CycleMachine();
-    const seen = new Set<string>();
-    let s = m.advance(0, 2, 1);
-    expect(s.phase).toBe('index');
-    for (let i = 0; i < 400; i += 1) {
-      s = m.advance(0.05, 2, 1);
-      seen.add(s.phase);
-      if (s.face === 1 && s.phase === 'approach') break;
-    }
-    expect([...seen]).toEqual(expect.arrayContaining(['index', 'approach', 'cut', 'retract']));
-    expect(s.B).toBeCloseTo(Math.PI, 5); // duas indexações completas
-  });
-
-  it('inclina o berço na face de topo e conta a peça ao final', () => {
-    const m = new CycleMachine();
-    let s = m.advance(0, 1, 0.5);
-    let minA = 0;
-    for (let i = 0; i < 2000 && s.parts === 0; i += 1) {
-      s = m.advance(0.05, 1, 0.5);
-      minA = Math.min(minA, s.A);
-    }
-    expect(minA).toBeCloseTo(-Math.PI / 2, 2);
-    expect(s.parts).toBe(1);
   });
 });

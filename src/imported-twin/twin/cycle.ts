@@ -1,131 +1,136 @@
-/**
- * Máquina de estados do ciclo de usinagem da peça sobre a mesa giratória.
- *
- * Faces 1–4: a mesa (eixo B) gira 90° para apresentar cada face lateral ao spindle
- * horizontal; o spindle aproxima, fresa (varredura X/Y) e recua.
- * Face 5: o berço (eixo A) inclina 90° para apresentar o topo, fresa e retorna.
- *
- * Os tempos vêm do modelo what-if: avanço → tempo de corte; velocidade da mesa → tempo de indexação.
- */
-export type CyclePhase = 'index' | 'approach' | 'cut' | 'retract' | 'tilt';
-
+import { BLOCK_FACES, DRILL_OPERATIONS, holeSurface } from './workpiece';
+export type CyclePhase = 'load' | 'index' | 'approach' | 'cut' | 'retract' | 'complete';
 export interface CycleState {
-  face: number; // 0..4
-  phase: CyclePhase;
-  /** progresso dentro da fase (0..1) */
-  p: number;
-  /** rotação acumulada da mesa (rad) */
-  B: number;
-  /** inclinação do berço (rad, 0 = horizontal, −π/2 = topo voltado ao spindle) */
-  A: number;
-  /** avanço do spindle em Z (0 recuado .. 1 em contato) */
-  z: number;
-  /** varredura da ferramenta na face (−1..1) */
-  tx: number;
-  ty: number;
-  cutting: boolean;
-  parts: number;
-  /** progresso da peça (0..1) */
-  progress: number;
-}
-
-const APPROACH = 0.8;
-const RETRACT = 0.8;
-const TILT = 1.4;
-
-interface Step {
   face: number;
   phase: CyclePhase;
-  dur: (cut: number, index: number) => number;
-  tiltDir?: 1 | -1;
+  p: number;
+  A: number;
+  B: number;
+  hole: number;
+  completed: number;
+  total: number;
+  penetration: number;
+  tx: number;
+  ty: number;
+  z: number;
+  cutting: boolean;
+  parts: number;
+  progress: number;
 }
-
-const STEPS: Step[] = [];
-for (let f = 0; f < 4; f += 1) {
-  STEPS.push({ face: f, phase: 'index', dur: (_c, i) => i });
-  STEPS.push({ face: f, phase: 'approach', dur: () => APPROACH });
-  STEPS.push({ face: f, phase: 'cut', dur: (c) => c });
-  STEPS.push({ face: f, phase: 'retract', dur: () => RETRACT });
-}
-STEPS.push({ face: 4, phase: 'tilt', dur: () => TILT, tiltDir: 1 });
-STEPS.push({ face: 4, phase: 'approach', dur: () => APPROACH });
-STEPS.push({ face: 4, phase: 'cut', dur: (c) => c * 0.8 });
-STEPS.push({ face: 4, phase: 'retract', dur: () => RETRACT });
-STEPS.push({ face: 4, phase: 'tilt', dur: () => TILT, tiltDir: -1 });
-
-const ease = (x: number) => (x < 0.5 ? 2 * x * x : 1 - (-2 * x + 2) ** 2 / 2);
-const HALF_PI = Math.PI / 2;
-
+const SAFE_Z = 0.66;
+const ease = (x: number) => x * x * (3 - 2 * x);
+/** Shared material-removal and tool-motion clock. XY/AB traverse only at safe Z.
+ * What-if feed controls drilling duration; table speed controls face indexing. */
 export class CycleMachine {
-  private step = 0;
+  private phase: CyclePhase = 'load';
   private elapsed = 0;
-  private indexCount = 0;
+  private hole = 0;
   parts = 0;
-
-  /** avança o ciclo `dt` segundos; cutS = tempo de corte por face, indexS = tempo de indexação */
+  private duration(cut: number, index: number) {
+    if (this.phase === 'load') return 1.5;
+    if (this.phase === 'complete') return 3;
+    if (this.phase === 'index')
+      return this.hole === 0 ||
+        DRILL_OPERATIONS[this.hole - 1].face !== DRILL_OPERATIONS[this.hole].face
+        ? Math.max(0.6, index)
+        : 0.45;
+    if (this.phase === 'cut')
+      return Math.max(0.35, cut * 0.16) * (0.7 + DRILL_OPERATIONS[this.hole].radius / 0.025);
+    return 0.45;
+  }
   advance(dt: number, cutS: number, indexS: number): CycleState {
     let remaining = Math.max(0, Math.min(dt, 1));
-    // laço limitado: dt é sempre pequeno (quadro de animação)
-    for (let guard = 0; guard < 50; guard += 1) {
-      const s = STEPS[this.step];
-      const d = Math.max(0.05, s.dur(cutS, indexS));
-      if (this.elapsed + remaining < d) {
+    for (let guard = 0; guard < 40; guard++) {
+      const duration = this.duration(cutS, indexS);
+      if (this.elapsed + remaining < duration) {
         this.elapsed += remaining;
         break;
       }
-      remaining -= d - this.elapsed;
+      remaining -= duration - this.elapsed;
       this.elapsed = 0;
-      if (s.phase === 'index') this.indexCount += 1;
-      this.step += 1;
-      if (this.step >= STEPS.length) {
-        this.step = 0;
-        this.parts += 1;
+      if (this.phase === 'load') this.phase = 'index';
+      else if (this.phase === 'index') this.phase = 'approach';
+      else if (this.phase === 'approach') this.phase = 'cut';
+      else if (this.phase === 'cut') this.phase = 'retract';
+      else if (this.phase === 'retract') {
+        if (this.hole === DRILL_OPERATIONS.length - 1) this.phase = 'complete';
+        else {
+          this.hole++;
+          this.phase = 'index';
+        }
+      } else {
+        this.parts++;
+        this.hole = 0;
+        this.phase = 'load';
       }
     }
     return this.state(cutS, indexS);
   }
-
   state(cutS: number, indexS: number): CycleState {
-    const s = STEPS[this.step];
-    const d = Math.max(0.05, s.dur(cutS, indexS));
-    const p = Math.min(1, this.elapsed / d);
-    const e = ease(p);
-    let B = this.indexCount * HALF_PI;
-    if (s.phase === 'index') B += e * HALF_PI;
-    let A = s.face === 4 ? -HALF_PI : 0;
-    if (s.phase === 'tilt') A = s.tiltDir === 1 ? -HALF_PI * e : -HALF_PI * (1 - e);
-    let z = 0;
-    if (s.phase === 'approach') z = e;
-    if (s.phase === 'cut') z = 1;
-    if (s.phase === 'retract') z = 1 - e;
-    const passes = 3;
-    const tx = s.phase === 'cut' ? Math.sin(p * passes * Math.PI * 2) : 0;
-    const ty =
-      s.phase === 'cut' ? 1 - 2 * p : s.phase === 'approach' ? 1 : s.phase === 'retract' ? -1 : 0;
-    let before = 0;
-    let total = 0;
-    STEPS.forEach((st, i) => {
-      const dd = Math.max(0.05, st.dur(cutS, indexS));
-      total += dd;
-      if (i < this.step) before += dd;
-    });
+    const op = DRILL_OPERATIONS[this.hole],
+      face = BLOCK_FACES[op.face];
+    const previous = BLOCK_FACES[DRILL_OPERATIONS[Math.max(0, this.hole - 1)].face];
+    const p = Math.min(1, this.elapsed / this.duration(cutS, indexS)),
+      e = ease(p);
+    let A = face.A,
+      B = face.B;
+    const [x, y, surfaceZ] = holeSurface(this.hole);
+    const before = this.hole === 0 ? [0, 1.22, SAFE_Z] : holeSurface(this.hole - 1);
+    let tx = x,
+      ty = y,
+      z = SAFE_Z,
+      penetration = 0;
+    if (this.phase === 'load') {
+      A = 0;
+      B = 0;
+      tx = 0;
+      ty = 1.22;
+    }
+    if (this.phase === 'index') {
+      A = (this.hole === 0 ? 0 : previous.A) * (1 - e) + face.A * e;
+      B = (this.hole === 0 ? 0 : previous.B) * (1 - e) + face.B * e;
+      tx = before[0] * (1 - e) + x * e;
+      ty = before[1] * (1 - e) + y * e;
+    }
+    if (this.phase === 'approach') z = SAFE_Z + (surfaceZ - SAFE_Z) * e;
+    if (this.phase === 'cut') {
+      penetration = p;
+      z = surfaceZ + op.depth * p;
+    }
+    if (this.phase === 'retract') {
+      penetration = 1;
+      z = (surfaceZ + op.depth) * (1 - e) + SAFE_Z * e;
+    }
+    if (this.phase === 'complete') {
+      A = face.A * (1 - e);
+      B = face.B * (1 - e);
+    }
+    const completed =
+      this.phase === 'load'
+        ? 0
+        : this.hole + (this.phase === 'retract' || this.phase === 'complete' ? 1 : 0);
     return {
-      face: s.face,
-      phase: s.phase,
+      face: op.face,
+      phase: this.phase,
       p,
-      B,
       A,
-      z,
+      B,
+      hole: this.hole,
+      completed,
+      total: DRILL_OPERATIONS.length,
+      penetration,
       tx,
       ty,
-      cutting: s.phase === 'cut',
+      z,
+      cutting: this.phase === 'cut',
       parts: this.parts,
-      progress: (before + this.elapsed) / total,
+      progress:
+        this.phase === 'load'
+          ? 0
+          : (completed + (this.phase === 'cut' ? p : 0)) / DRILL_OPERATIONS.length,
     };
   }
 }
-
-/** tempo de indexação de 90° (s) para a velocidade da mesa em rpm */
 export function indexSeconds(tableRpm: number): number {
   return Math.min(8, Math.max(0.4, 15 / Math.max(0.5, tableRpm)));
 }

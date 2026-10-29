@@ -169,11 +169,11 @@ function CycleStatus() {
   const cycle = useTwin((s) => s.cycle);
   const chatter = useTwin((s) => s.live.spindle.chatter);
   return (
-    <div className="twin-cycle" aria-live="polite">
+    <div className="twin-cycle" aria-live="polite" data-testid="machining-cycle" data-completed={cycle.completed} data-total={cycle.total} data-parts={cycle.parts}>
       <span className="tc-title">{t('twin.cycle')}</span>
       <span>
         {t('twin.phase')}: <b data-testid="cycle-phase">{t(`twin.phases.${cycle.phase}`)}</b> ·{' '}
-        {t('twin.face', { n: cycle.face + 1 })} · {t('twin.parts')}: <b>{cycle.parts}</b>
+        {t('twin.holes')}: {cycle.completed}/{cycle.total} · {t('twin.parts')}: <b>{cycle.parts}</b>
       </span>
       <div className="bar-track" style={{ height: '0.3rem', borderRadius: 4 }}>
         <div

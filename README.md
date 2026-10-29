@@ -130,8 +130,10 @@ chatter, rolamento do spindle, fixação excêntrica, cavitação, rolamento cr�
 sobrepressão e desalinhamento. As fórmulas e os presets foram mantidos. RMS,
 kurtosis, crest, grandezas elétricas e condição aparecem nos cards; cores,
 vibração e rótulos refletem as leituras, com histórico de 60 segundos e contribuição
-dos mecanismos. O ciclo recebido de cinco faces anima indexação, aproximação,
-fresamento, retorno e inclinação do berço, contando peças concluídas.
+dos mecanismos. O ciclo de furação usa as cinco faces das fotos em `imgBloco`: 42 furos sequenciais,
+aproximação, penetração e recuo, com indexação da mesa e inclinação do berço.
+O avanço altera o tempo de furação e a velocidade da mesa altera a indexação.
+A peça concluída é exibida por três segundos e substituída por um bloco novo.
 
 Os limiares e efeitos são demonstrativos e não devem ser usados como diagnóstico
 certificado do fabricante. A integração está documentada em
@@ -141,7 +143,7 @@ certificado do fabricante. A integração está documentada em
 
 `src/live.tsx` centraliza um único timer de 1.000 ms, relógio e snapshots imutáveis derivados dos dados de `src/data.ts`. Disponibilidade, RMS, grandezas elétricas, séries temporais, distribuição, heatmaps, cobertura e duração operacional evoluem sem recarregar. O Twin consome o mesmo relógio por um adaptador; animações 3D usam requestAnimationFrame. O timer é descartado ao desmontar a aplicação. O cabeçalho usa a hora real; as leituras continuam sendo geradas localmente, sem conexão com equipamento físico.
 
-Os avisos de demonstração foram retirados da interface operacional. **Inspeção Visual foi preservada**: seu arquivo, evidências, resultados, referências e interações não foram alterados pelo timer. Não se devem atualizar evidências históricas como se fossem sinais correntes.
+Os avisos de demonstração foram retirados da interface operacional. **Inspeção atual** percorre os cinco casos existentes automaticamente a cada cinco segundos (mais 650 ms de processamento), enquanto a tela estiver aberta. O timer evita solicitações simultâneas, tenta novamente após falhas e é descartado ao sair da tela. As evidências históricas e as referências são preservadas.
 
 Dashboards permitem rolagem vertical para priorizar leitura e exibir todos os painéis.
 O menu lateral permanece visível em desktop a 100%, com modo compacto em janelas
@@ -193,12 +195,12 @@ Limite do ambiente de entrega: Docker não estava instalado; o comando Compose n
 
 ### Atualização de medições e histórico (27/10/2026)
 
-- A peça no Digital Twin é somente o bloco metálico inferior, com as inscrições originais e a textura sem os furos escuros. Tampa, cilindros e círculos laterais foram removidos; o percurso do spindle foi ajustado à altura do bloco. Cenários e cálculos what-if permanecem iguais.
+- A peça no Digital Twin foi atualizada em 29/10/2026 conforme as fotos de `imgBloco`, com alumínio sem inscrições e furos geométricos progressivos. Cenários e cálculos what-if permanecem iguais.
 - Os dashboards analíticos apresentam a aceleração RMS em **mm/s²**. Os valores são sementes de aceleração em `src/data.ts`, não uma conversão matemática de velocidade. O modelo what-if importado mantém sua grandeza própria de velocidade RMS em mm/s.
-- As cinco telas analíticas incluem **Grandezas elétricas**, com tensão RMS entre fases (V), corrente RMS (A), potência ativa (kW), reativa (kvar), aparente (kVA), fator de potência e frequência (Hz). Clique no card para selecionar a tendência. Todos seguem os filtros globais e o relógio de um segundo, em português e inglês.
+- Apenas a **Visão geral** inclui **Monitoramento Trifásico**, com subtítulo **atualização em tempo real**, com tensão RMS entre fases (V), corrente RMS (A), potência ativa (kW), reativa (kvar), aparente (kVA), fator de potência e frequência (Hz). Clique no card para selecionar a tendência. Todos seguem os filtros globais e o relógio de um segundo, em português e inglês.
 - As sementes elétricas estão centralizadas em `electricalSeeds`, em `src/data.ts`. `src/electrical.ts` modela circuitos trifásicos equilibrados e senoidais: S = √3 × U × I / 1000, P = S × FP e Q = √(S² − P²). Para múltiplos ativos, tensão/corrente/frequência são médias; P/Q são somas; S/FP são calculados a partir dos totais de P/Q. Não se somam tensões. O período muda a tendência histórica, não multiplica a leitura instantânea.
 - O histórico inclui **480 peças em aproximadamente oito horas**, cerca de 60 peças/hora, mantendo os cinco casos de evidência originais. A janela selecionável de 1, 4 ou 8 horas termina no registro mais recente; as datas de evidência são preservadas. Cards contam a janela, e busca/resultado refinam a lista. A tabela tem linhas compactas, cabeçalho fixo, rolagem própria e acesso às evidências de qualquer registro.
 - Testes novos: `src/electrical.test.ts` valida as identidades de potência, agregações, filtros, atualização e consistência do histórico. `e2e/measurements.spec.ts` verifica interação, unidades, tradução, densidade e rolagem no navegador.
 
 
-A textura do bloco foi editada com a ferramenta nativa `image_gen` e está em `public/img/abs-face-metal.png`; a fotografia anterior `public/img/abs-face.jpg` permanece disponível para referência. Prompt e processo: [textura da peça](docs/model/WORKPIECE-TEXTURE.md).
+A textura antiga `public/img/abs-face-metal.png` foi aposentada do 3D; seus arquivos e documentação permanecem para rastreabilidade. O bloco atual usa materiais de alumínio e cavidades geométricas, sem textura fotográfica. Construção e ciclo: [bloco de alumínio](docs/model/ALUMINIUM-BLOCK.md).

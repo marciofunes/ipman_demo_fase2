@@ -4,8 +4,9 @@ Origem: `digital-twin-g300.zip`, enviado pelo usuário. O pacote original fica e
 `vendor/digital-twin-g300` para comparação. Nenhum script do pacote foi executado.
 
 O código ativo está em `src/imported-twin`. A geometria, os componentes da máquina,
-materiais, projeção/oclusão dos rótulos, câmeras, ciclo de cinco faces, fórmulas e
-presets what-if foram mantidos. As texturas locais estão em `public/img` e os
+materiais da máquina, projeção/oclusão dos rótulos, fórmulas e presets what-if
+foram mantidos. A peça, o ciclo de furação e a câmera da área de usinagem
+foram atualizados conforme as fotos de `imgBloco` em 29/10/2026. As texturas locais estão em `public/img` e os
 artefatos de conversão recebidos estão em `docs/imported-twin/reference`.
 
 Adaptações de integração:
@@ -25,3 +26,8 @@ esta integração não refez a conversão nem certifica dimensões de engenharia
 
 O modelo é uma representação visual e o modelo matemático é demonstrativo.
 As classificações não constituem diagnóstico ou limites certificados do fabricante.
+
+O script `node scripts/verify-twin-import.mjs` compara geometria gerada e presets
+what-if com o pacote original. O ciclo novo é verificado separadamente em
+`src/imported-twin/cycle.test.ts`, incluindo alinhamento, sequência de furos,
+recuo antes de indexação e reinício com bloco sem furos.

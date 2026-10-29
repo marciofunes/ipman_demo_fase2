@@ -309,7 +309,7 @@
   "twin.parts": "Finished parts",
   "twin.phases.index": "Table rotation",
   "twin.phases.approach": "Approach",
-  "twin.phases.cut": "Milling",
+  "twin.phases.cut": "Drilling",
   "twin.phases.retract": "Retract",
   "twin.phases.tilt": "Cradle tilt",
   "twin.chatter": "Chatter: depth above the stability limit",
@@ -388,5 +388,12 @@
   "Inspeções na janela": "Inspections in window",
   "Janela do histórico": "History window",
   "peças na janela": "parts in window",
-  "Lista de inspeções": "Inspection list"
+  "Lista de inspeções": "Inspection list",
+  "twin.phases.load": "New blank",
+  "twin.phases.complete": "Part completed",
+  "twin.holes": "Holes",
+  "Monitoramento Trifásico": "Three-phase Monitoring",
+  "atualização em tempo real": "real-time updates",
+  "Inspeção automática · a cada 5 segundos": "Automatic inspection · every 5 seconds",
+  "Nova tentativa automática em 5 segundos.": "Automatic retry in 5 seconds."
 }

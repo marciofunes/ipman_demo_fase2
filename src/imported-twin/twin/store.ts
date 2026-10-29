@@ -1,3 +1,5 @@
+import type { CyclePhase } from './cycle';
+import { DRILL_OPERATIONS } from './workpiece';
 import { create } from 'zustand';
 import { twinNoise } from '../mocks';
 import {
@@ -14,7 +16,9 @@ import {
 
 export interface CycleInfo {
   face: number;
-  phase: 'index' | 'approach' | 'cut' | 'retract' | 'tilt';
+  phase: CyclePhase;
+  completed: number;
+  total: number;
   parts: number;
   progress: number;
 }
@@ -108,7 +112,7 @@ export const useTwin = create<TwinState>((set, get) => ({
   electrical: first.electrical,
   history: seedHistory(initialParams, initialNow),
   activePreset: 'current',
-  cycle: { face: 0, phase: 'index', parts: 0, progress: 0 },
+  cycle: { face: 0, phase: 'load', parts: 0, progress: 0, completed: 0, total: DRILL_OPERATIONS.length },
   setCycle: (cycle) => set({ cycle }),
   setParam: (id, key, value) => {
     set((s) => ({

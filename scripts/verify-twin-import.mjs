@@ -22,12 +22,8 @@ for (const preset of supplied.PRESETS) {
   const after = integrated.evaluateAll(equivalent.apply(integrated.defaultParams()));
   assert.equal(JSON.stringify(after), JSON.stringify(before), preset.id);
 }
-const before = loadPure('vendor/digital-twin-g300/src/twin/cycle.ts');
-const after = loadPure('src/imported-twin/twin/cycle.ts');
-const first = new before.CycleMachine(), second = new after.CycleMachine();
-for (let frame = 0; frame < 3000; frame++) {
-  assert.equal(JSON.stringify(second.advance(.05, 2, 1)), JSON.stringify(first.advance(.05, 2, 1)));
-}
+// The drilling cycle intentionally replaces the supplied milling cycle.
+// Its trajectories and blank replacement are validated in cycle.test.ts.
 const geometry = path => JSON.parse(fs.readFileSync(path, 'utf8'));
 assert.deepEqual(geometry('src/imported-twin/three/generated/g300-geometry.json'), geometry('vendor/digital-twin-g300/src/three/generated/g300-geometry.json'));
-console.log(`Preserved: generated geometry, ${supplied.PRESETS.length} presets and 3,000 machining-cycle steps.`);
+console.log(`Preserved: generated geometry, ${supplied.PRESETS.length} presets; drilling cycle tested separately.`);

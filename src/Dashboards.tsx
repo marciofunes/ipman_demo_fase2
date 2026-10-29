@@ -271,7 +271,6 @@ export function Dashboards({
             {t('Clipping')}
           </p>
         </Card>
-        {electrical}
       </div>
     );
   if (page === 'Referências')
@@ -368,7 +367,6 @@ export function Dashboards({
             </div>
           </Card>
         </div>
-        {electrical}
       </div>
     );
   if (page === 'Condição dos ativos')
@@ -443,7 +441,6 @@ export function Dashboards({
             label={t('Evidências da condição')}
           />
         </Card>
-        {electrical}
       </div>
     );
   return (
@@ -546,7 +543,6 @@ export function Dashboards({
           </form>
         </Card>
       </div>
-      {electrical}
     </div>
   );
 }

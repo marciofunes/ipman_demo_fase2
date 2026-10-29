@@ -18,8 +18,8 @@ export function ElectricalPanel({ data, hours }: { data: ReturnType<typeof query
   const [metric, setMetric] = useState<ElectricalMetric>('power');
   const selected = quantities.find(q => q.key === metric)!;
   return (
-    <Card title={t('Grandezas elétricas')} className="electrical-panel">
-      <p className="muted">{t('Medição trifásica por ativo · atualização a cada segundo')}</p>
+    <Card title={t('Monitoramento Trifásico')} className="electrical-panel">
+      <p className="muted">{t('atualização em tempo real')}</p>
       <div className="electrical-metrics" role="group" aria-label={t('Grandeza no gráfico')}>
         {quantities.map(q => (
           <button key={q.key} type="button" data-testid={`electrical-${q.key}`}

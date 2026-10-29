@@ -409,10 +409,19 @@ export const mockData = {
     baseline: { rms: 2.1, current: 12.4, power: 7.8, pf: 0.92 },
   },
 };
+/** Timestamp current results in local time; preserve the historical sample records. */
+export function currentInspection(sample: Inspection, now = new Date()): Inspection {
+  const pad = (value: number) => String(value).padStart(2, '0');
+  return {
+    ...structuredClone(sample),
+    date: `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`,
+    time: `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`,
+  };
+}
 export const demoRepository = {
   async inspect(index: number) {
     await new Promise((r) => setTimeout(r, 650));
-    return structuredClone(inspections[index % inspections.length]);
+    return currentInspection(inspections[index % inspections.length]);
   },
 };
 export function validateReference(value: unknown): value is { pns: Reference['pns'] } {

@@ -18,7 +18,7 @@ import {
   Clock,
   Globe,
 } from 'lucide-react';
-import { mockData, assetOptions, type Inspection } from './data';
+import { mockData, assetOptions, currentInspection, type Inspection } from './data';
 import { useI18n } from './i18n';
 import { LiveProvider, useLive, formatClock } from './live';
 import { Boundary } from './ui';
@@ -56,7 +56,7 @@ function AppShell() {
     asset: '',
     period: 'Últimas 8 horas',
   });
-  const [inspection, setInspection] = useState<Inspection>(mockData.inspection.inspections[0]);
+  const [inspection, setInspection] = useState<Inspection>(() => currentInspection(mockData.inspection.inspections[0]));
   const [history, setHistory] = useState(mockData.inspection.history);
   const [references, setReferences] = useState(mockData.references);
   const [active, setActive] = useState(12);

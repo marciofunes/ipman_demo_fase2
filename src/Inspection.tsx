@@ -1,10 +1,9 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Upload,
   Search,
   Check,
   RotateCcw,
-  ScanLine,
   Eye,
   X,
   Download,
@@ -125,9 +124,28 @@ export function CurrentInspection({
   activeVersion: number;
 }) {
   const { t } = useI18n();
-  const [busy, setBusy] = useState(false);
   const [error, setError] = useState(false);
-  const index = useRef(0);
+  const index = useRef(Math.max(0, mockData.inspection.inspections.findIndex(i => i.id === inspection.id)));
+  const latest = useRef({ setInspection, activeVersion });
+  latest.current = { setInspection, activeVersion };
+  useEffect(() => {
+    let active = true;
+    let pending = false;
+    const timer = window.setInterval(async () => {
+      if (pending) return;
+      pending = true;
+      setError(false);
+      try {
+        const next = await demoRepository.inspect(++index.current);
+        if (active) latest.current.setInspection({ ...next, version: latest.current.activeVersion });
+      } catch {
+        if (active) setError(true);
+      } finally {
+        pending = false;
+      }
+    }, 5000);
+    return () => { active = false; window.clearInterval(timer); };
+  }, []);
   const counts = {
     ok: inspection.fields.filter((f) => f.status === "Conforme").length,
     bad: inspection.fields.filter((f) =>
@@ -136,19 +154,6 @@ export function CurrentInspection({
     missing: inspection.fields.filter((f) => f.status === "Não detectado")
       .length,
   };
-  async function inspect() {
-    setBusy(true);
-    setError(false);
-    try {
-      index.current++;
-      const next = await demoRepository.inspect(index.current);
-      setInspection({ ...next, version: activeVersion });
-    } catch {
-      setError(true);
-    } finally {
-      setBusy(false);
-    }
-  }
   return (
     <>
       <div className="page-intro intro-action">
@@ -162,15 +167,11 @@ export function CurrentInspection({
             #{inspection.id} · {t("Última inspeção")}: {inspection.time}
           </span>
         </div>
-        <button className="primary" disabled={busy} onClick={inspect}>
-          <ScanLine size={17} />
-          {t(busy ? "Processando inspeção…" : "Executar nova inspeção")}
-        </button>
       </div>
       {error && (
         <div role="alert" className="notice">
           {t("Ocorreu um erro ao exibir esta tela.")}
-          <button onClick={inspect}>{t("Tentar novamente")}</button>
+          <span>{t("Nova tentativa automática em 5 segundos.")}</span>
         </div>
       )}
       <div className="stats six">

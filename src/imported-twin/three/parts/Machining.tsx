@@ -1,4 +1,4 @@
-import { RoundedBox, useTexture } from '@react-three/drei';
+import { RoundedBox } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
@@ -7,6 +7,8 @@ import { useTwin } from '../../twin/store';
 import { cavitation, cycleSeconds } from '../../twin/whatif';
 import type { PartMaterials, ShellMaterials } from '../materials';
 import { Monitored } from './Monitored';
+import { Workpiece } from './Workpiece';
+import { DRILL_OPERATIONS } from '../../twin/workpiece';
 
 /** Eixo do berço (A) e centro da mesa (B) no referencial da máquina */
 export const TRUNNION_AXIS = new THREE.Vector3(0, 1.0, 1.3);
@@ -40,19 +42,13 @@ function useMachining() {
     const c = machine.advance(dt, cutS, idxS);
     const sh = shared.current;
     sh.cycle = c;
-    // posição do carro (X/Y) do spindle
-    const tiltFrac = Math.min(1, Math.abs(c.A) / (Math.PI / 2));
-    const yBase = 1.12 - 0.12 * tiltFrac;
-    sh.carriage.set(c.tx * 0.07, yBase + c.ty * (c.face === 4 ? 0.05 : 0.03));
-    // At B=90/270 the front half-extent is 0.14 m, at B=180/360 it is
-    // 0.085 m; after A=-90 the top plane is z=1.3-0.17. Cut 5 mm into each face.
-    const travel = c.face === 4 ? 0.475 : c.face % 2 === 0 ? 0.505 : 0.56;
-    sh.tip.set(sh.carriage.x, sh.carriage.y, TIP_RETRACTED + travel * c.z);
+    sh.carriage.set(c.tx, c.ty);
+    sh.tip.set(c.tx, c.ty, c.z);
     sh.spin += dt * st.live.spindle.shaftRpm * 0.0032;
-    const key = `${c.face}|${c.phase}|${c.parts}`;
+    const key = `${c.hole}|${c.phase}|${c.parts}|${Math.floor(c.progress * 100)}`;
     if (key !== lastKey.current) {
       lastKey.current = key;
-      setCycle({ face: c.face, phase: c.phase, parts: c.parts, progress: c.progress });
+      setCycle({ face: c.face, phase: c.phase, parts: c.parts, progress: c.progress, completed: c.completed, total: c.total });
     }
   }, -1);
   return shared;
@@ -72,17 +68,24 @@ function Spindle({
   const carriage = useRef<THREE.Group>(null);
   const quill = useRef<THREE.Group>(null);
   const rotor = useRef<THREE.Group>(null);
+  const drill = useRef<THREE.Group>(null);
   const motorRotor = useRef<THREE.Mesh>(null);
   const ram = useRef<THREE.Mesh>(null);
 
   useFrame(() => {
     const sh = shared.current;
     if (carriage.current) carriage.current.position.set(sh.carriage.x, sh.carriage.y, HEAD_Z);
+    const radius = DRILL_OPERATIONS[sh.cycle.hole].radius / 0.016;
+    if (drill.current) drill.current.scale.set(radius, radius, 1);
     const ext = sh.tip.z - TIP_RETRACTED;
     if (quill.current) quill.current.position.z = ext;
     if (ram.current) {
-      ram.current.scale.y = Math.max(0.01, ext + 0.02);
-      ram.current.position.z = 0.24 + ext / 2;
+      // Overlap the moving carriage (front Z=.17) and spindle body
+      // (rear Z=.17+ext), so the telescopic arm stays seated at both ends.
+      const rear = 0.15;
+      const front = 0.21 + ext;
+      ram.current.scale.y = front - rear;
+      ram.current.position.z = (front + rear) / 2;
     }
     if (rotor.current) rotor.current.rotation.z = sh.spin;
     // CylinderGeometry's shaft is local Y. The motor parent aligns Y with the
@@ -135,7 +138,7 @@ function Spindle({
           </mesh>
         </group>
         {/* aríete telescópico (fole) */}
-        <mesh ref={ram} position={[0, 0, 0.24]} rotation={[Math.PI / 2, 0, 0]} material={pm.black}>
+        <mesh ref={ram} position={[0, 0, 0.18]} scale={[1, 0.06, 1]} rotation={[Math.PI / 2, 0, 0]} material={pm.black}>
           <cylinderGeometry args={[0.1, 0.1, 1, 24]} />
         </mesh>
         <group ref={quill}>
@@ -170,16 +173,18 @@ function Spindle({
             <mesh position={[0, 0, 0.585]} rotation={[Math.PI / 2, 0, 0]} material={pm.darkSteel}>
               <cylinderGeometry args={[0.03, 0.03, 0.04, 16]} />
             </mesh>
-            {[0, 1, 2].map((k) => (
-              <mesh
-                key={k}
-                position={[0, 0, 0.635]}
-                rotation={[0, 0, (k * Math.PI) / 3]}
-                material={pm.darkSteel}
-              >
-                <boxGeometry args={[0.03, 0.007, 0.07]} />
+            <group ref={drill}>
+              <mesh position={[0, 0, 0.6275]} rotation={[Math.PI / 2, 0, 0]} material={pm.steel}>
+                <cylinderGeometry args={[0.016, 0.016, 0.065, 24]} />
               </mesh>
-            ))}
+              <mesh position={[0, 0, 0.665]} rotation={[Math.PI / 2, 0, 0]} material={pm.steel}>
+                <coneGeometry args={[0.016, 0.01, 24]} />
+              </mesh>
+              {[0, 1].map(k => <mesh key={k} position={[0, 0, 0.632]}
+                rotation={[0, 0, k * Math.PI / 2]} material={pm.darkSteel}>
+                <boxGeometry args={[0.025, 0.003, 0.055]} />
+              </mesh>)}
+            </group>
           </group>
         </group>
       </group>
@@ -188,25 +193,6 @@ function Spindle({
 }
 
 /* --------------------------------------------------------------- mesa */
-
-function Workpiece() {
-  const face = useTexture('/img/abs-face-metal.png');
-  face.colorSpace = THREE.SRGBColorSpace;
-  const materials = useMemo(() => {
-    const alu = new THREE.MeshStandardMaterial({ color: '#cfd3d8', metalness: 0.7, roughness: 0.3 });
-    const engraving = new THREE.MeshStandardMaterial({ map: face, metalness: 0.35, roughness: 0.42 });
-    // Preserve the original engraved faces; the manufactured part is only the metal blank.
-    return [alu, alu, alu, alu, engraving, engraving];
-  }, [face]);
-  return (
-    <group name="workpiece" position={[0, 0.07, 0]} userData={{ noTint: true }}>
-      <mesh name="engraved-metal-block" position={[0, 0.05, 0]} material={materials}
-        castShadow userData={{ noTint: true }} rotation={[0, Math.PI, 0]}>
-        <boxGeometry args={[0.28, 0.1, 0.17]} />
-      </mesh>
-    </group>
-  );
-}
 
 function Trunnion({ shared, pm }: { shared: React.MutableRefObject<Shared>; pm: PartMaterials }) {
   const cradle = useRef<THREE.Group>(null);
@@ -337,7 +323,7 @@ function Trunnion({ shared, pm }: { shared: React.MutableRefObject<Shared>; pm: 
               <boxGeometry args={[0.02, 0.07, 0.2]} />
             </mesh>
           ))}
-          <Workpiece />
+          <Workpiece cycle={() => shared.current.cycle} />
         </group>
       </group>
     </Monitored>
@@ -537,7 +523,7 @@ function ToolMagazine({
   const offset = useRef(0);
   useFrame((_, dt) => {
     const c = shared.current.cycle;
-    if (c.phase === 'index' || c.phase === 'tilt') offset.current += dt * 0.12;
+    if (c.phase === 'index') offset.current += dt * 0.12;
     rows.current?.children.forEach((row, r) => {
       row.children.forEach((tool, i) => {
         const z =

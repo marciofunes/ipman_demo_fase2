@@ -3,7 +3,6 @@ import {
   screen,
   within,
   fireEvent,
-  waitFor,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect } from "vitest";
@@ -49,7 +48,7 @@ describe("navigation and localization", () => {
     ).toBeInTheDocument();
     expect(screen.getAllByText("Rejected").length).toBeGreaterThan(0);
     expect(
-      screen.getByRole("button", { name: "Run new inspection" }),
+      screen.getByText("Automatic inspection · every 5 seconds"),
     ).toBeInTheDocument();
     expect(document.documentElement.lang).toBe("en");
     await u.selectOptions(screen.getByLabelText("Language"), "pt");
@@ -80,15 +79,7 @@ describe("visual inspection workflows", () => {
     expect(
       screen.getByRole("button", { name: "Field 8 Divergente" }),
     ).toBeInTheDocument();
-    await u.click(
-      screen.getByRole("button", { name: "Executar nova inspeção" }),
-    );
-    expect(
-      screen.getByRole("button", { name: "Processando inspeção…" }),
-    ).toBeDisabled();
-    await waitFor(() =>
-      expect(screen.getByText("11 / 11")).toBeInTheDocument(),
-    );
+
   });
   it("queries PN, reports missing PN, and restores an older version", async () => {
     mount();

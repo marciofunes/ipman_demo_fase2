@@ -25,7 +25,7 @@ const CAMERAS: Record<
   { pos: [number, number, number]; target: [number, number, number] }
 > = {
   overview: { pos: [3.95, 3.05, 6.25], target: [0.15, 1.1, 0.0] },
-  workarea: { pos: [-0.42, 1.7, 2.55], target: [0.15, 1.12, 0.85] },
+  workarea: { pos: [-0.43, 1.72, 0.64], target: [0, 1.23, 1.3] },
   service: { pos: [3.7, 1.75, -0.6], target: [0.85, 1.05, -1.0] },
   xray: { pos: [-4.4, 3.4, 4.6], target: [0.25, 1.1, -0.1] },
 };
@@ -146,7 +146,8 @@ function Machine() {
 function Loader() {
   const { t } = useTranslation();
   const { progress, active } = useProgress();
-  if (!active && progress >= 100) return null;
+  // Procedural geometry may load without any texture requests (progress stays 0).
+  if (!active) return null;
   return (
     <div className="twin-loading" role="status" aria-live="polite">
       <span className="spinner" />
@@ -222,6 +223,8 @@ export default function G300Scene() {
           shadow-bias={-0.0004}
         />
         <directionalLight position={[-5, 3, -3]} intensity={0.45} />
+        {/* Work-area lamp illuminates the face presented to the horizontal drill. */}
+        <pointLight position={[-0.25, 1.95, 0.65]} intensity={3} distance={3} decay={2} />
         <Environment resolution={256} frames={1}>
           <Lightformer
             intensity={2.2}
@@ -265,7 +268,7 @@ export default function G300Scene() {
           target={CAMERAS.overview.target}
           enableDamping
           dampingFactor={0.08}
-          minDistance={1.2}
+          minDistance={0.35}
           maxDistance={14}
           maxPolarAngle={Math.PI / 2 - 0.03}
           makeDefault
